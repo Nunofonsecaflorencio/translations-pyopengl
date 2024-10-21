@@ -1,49 +1,43 @@
 import pygame as pg
+from pygame.locals import *
 from OpenGL.GL import *
+from OpenGL.GLU import *
+
+from objects.cube import Cube
 
 class App:
     def __init__(self):
-        self._set_up_pygame()
-
-        self.clock = pg.time.Clock()
-
-        self._set_up_opengl()
+        self.DISPLAY_SIZE = (640, 480)
     
-    def _set_up_pygame(self) -> None:
-        """
-            Initialize and configure pygame.
-        """
-
+        # Inicialize Pygame
         pg.init()
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_MAJOR_VERSION, 3)
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_MINOR_VERSION, 3)
-        pg.display.gl_set_attribute(pg.GL_CONTEXT_PROFILE_MASK,
-                                    pg.GL_CONTEXT_PROFILE_CORE)
-        pg.display.set_mode((640,480), pg.OPENGL|pg.DOUBLEBUF)
+        pg.display.set_mode(self.DISPLAY_SIZE, DOUBLEBUF | OPENGL)
+        self.clock = pg.time.Clock()
+        
+        # Setup OpenGL
+        self._set_up_opengl()
+        
+        self.cube = Cube(1, (1.0, 0.0, 0.0))
+        
 
-    
     def _set_up_opengl(self) -> None:
-        """
-            Configure any desired OpenGL options
-        """
-
         glClearColor(0.1, 0.2, 0.2, 1)
-    
+        gluPerspective(45, (self.DISPLAY_SIZE[0] / self.DISPLAY_SIZE[1]), 0.1, 50.0)
+        glTranslatef(0.0, 0.0, -5)
+
     def run(self) -> None:
-        """ Run the app """
-
         running = True
-        while (running):
-            #check events
+        while running:
             for event in pg.event.get():
-                if (event.type == pg.QUIT):
+                if event.type == pg.QUIT:
                     running = False
-            #refresh screen
-            glClear(GL_COLOR_BUFFER_BIT)
 
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            
+            glRotatef(1, 3, 1, 1)
+            self.cube.draw()
+            
             pg.display.flip()
-
-            #timing
             self.clock.tick(60)
 
     def quit(self) -> None:
