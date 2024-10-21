@@ -26,6 +26,7 @@ class Cube:
         )
     
     def draw(self):
+        glColor3f(*self.color)
         glBegin(GL_LINES)
         for edge in self.edges:
             for vertex in edge:
