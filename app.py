@@ -25,6 +25,8 @@ class App:
         glClearColor(0.1, 0.2, 0.2, 1)
         gluPerspective(45, (self.DISPLAY_SIZE[0] / self.DISPLAY_SIZE[1]), 0.1, 50.0)
         glTranslatef(0.0, 0.0, -5)
+        
+    
 
     def run(self) -> None:
         running = True
@@ -33,12 +35,13 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                self.translate(event)
 
             
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             
-            glRotatef(1, 3, 1, 1)
+            # glRotatef(1, 3, 1, 1)
             self.cube.draw()
             
             pygame.display.flip()
@@ -46,6 +49,19 @@ class App:
 
     def quit(self) -> None:
         pygame.quit()
+    
+    def translate(self, event):
+         if event.type == pygame.KEYDOWN:
+            if event.key== pygame.K_UP:
+                glTranslatef(0, 0.5, 0)
+            if event.key == pygame.K_DOWN:
+                glTranslatef(0, -0.5, 0)
+            if event.key == pygame.K_LEFT:
+                glTranslatef(-0.5, 0, 0)
+            if event.key == pygame.K_RIGHT:
+                glTranslatef(0.5, 0, 0)
+        
+    
 
 
 if __name__ == "__main__":
