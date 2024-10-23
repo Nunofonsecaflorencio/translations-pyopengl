@@ -13,6 +13,8 @@ class Snake:
         self.direction = (1, 0)
         self.length = 5
 
+        self.just_grew = False
+
     def draw(self):
         for x, y in self.positions:
             glPushMatrix()
@@ -37,8 +39,14 @@ class Snake:
 
         self.positions = [new_head] + self.positions[:-1]
 
+        if self.just_grew:
+            self.just_grew = False
+
     def grow(self):
-        self.positions.append(self.positions[-1])
+        tail = self.positions[-1]
+        self.positions.append(tail)
+
+        self.just_grew = True
 
     def change_direction(self, new_direction):
         if new_direction == "UP" and self.direction != (0, -1):

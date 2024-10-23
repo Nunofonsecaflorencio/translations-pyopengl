@@ -7,9 +7,8 @@ from OpenGL.GLU import *
 from snake import Snake, SNAKE_SIZE
 from food import Food
 
-# Constants
 WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 800
+WINDOW_HEIGHT = 600
 
 
 class Game:
@@ -49,9 +48,9 @@ class Game:
         while self.running:
             self.handle_events()
             self.snake.move()
-            self.snake.check_collisions()
+            self.check_food_collision()
 
-            if self.snake.check_collisions():
+            if not self.snake.just_grew and self.snake.check_collisions():
                 self.running = False
 
             glClear(GL_COLOR_BUFFER_BIT)
