@@ -4,7 +4,7 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from snake import Snake
+from snake import Snake, SNAKE_SIZE
 from food import Food
 
 # Constants
@@ -22,6 +22,43 @@ class Game:
         self.snake = Snake()
         self.food = Food()
         self.running = True
-        
+
     def handle_events(self):
-        pass
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                self.running = False
+            elif event.type == KEYDOWN:
+                if event.key == K_UP:
+                    self.snake.change_direction("UP")
+                elif event.key == K_DOWN:
+                    self.snake.change_direction("DOWN")
+                elif event.key == K_LEFT:
+                    self.snake.change_direction("LEFT")
+                elif event.key == K_RIGHT:
+                    self.snake.change_direction("RIGHT")
+
+    def check_food_collision(self):
+        head_x, head_y = self.snake.positions[0]
+        food_x, food_y = self.food.position
+
+        if abs(head_x - food_x) < SNAKE_SIZE and abs(head_y - food_y) < SNAKE_SIZE:
+            self.snake.grow()
+            self.food = Food()
+
+    def run(self):
+        while self.running:
+            self.handle_events()
+            self.snake.move()
+            self.snake.check_collisions()
+
+            if self.snake.check_collisions():
+                self.running = False
+
+            glClear(GL_COLOR_BUFFER_BIT)
+            self.snake.draw()
+            self.food.draw()
+
+            pygame.display.flip()
+            pygame.time.wait(100)
+
+        pygame.quit()
