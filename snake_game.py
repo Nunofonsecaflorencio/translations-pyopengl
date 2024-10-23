@@ -5,7 +5,6 @@ from OpenGL.GLU import *
 
 from random import randint
 
-from objects.cube import Cube
 from objects.square import Square
 
 class App:

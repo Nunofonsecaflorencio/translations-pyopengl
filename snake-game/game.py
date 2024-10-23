@@ -22,6 +22,23 @@ class Game:
         self.food = Food()
         self.running = True
 
+    def draw_grid(self):
+        glPushMatrix()
+
+        glScale(self.CELL_SIZE, self.CELL_SIZE, 0)
+
+        glColor(0, 0, 0, .2)
+        glBegin(GL_LINES)
+
+        for j in range(self.ROWS):
+            glVertex(0, j)
+            glVertex(self.COLS, j)
+        for i in range(self.COLS):
+            glVertex(i, 0)
+            glVertex(i, self.ROWS)
+        glEnd()
+        glPopMatrix()
+
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -54,6 +71,8 @@ class Game:
                 self.running = False
 
             glClear(GL_COLOR_BUFFER_BIT)
+
+            # self.draw_grid()
             self.snake.draw()
             self.food.draw()
 
