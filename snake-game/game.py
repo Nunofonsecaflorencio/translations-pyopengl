@@ -9,7 +9,11 @@ from food import Food
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
-
+GRID = {
+    'rows': WINDOW_HEIGHT // SNAKE_SIZE,
+    'cols': WINDOW_WIDTH // SNAKE_SIZE,
+    'size': SNAKE_SIZE
+}
 
 class Game:
     def __init__(self):
@@ -17,6 +21,7 @@ class Game:
         pygame.display.set_mode(
             (WINDOW_WIDTH, WINDOW_HEIGHT), DOUBLEBUF | OPENGL)
         gluOrtho2D(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT)
+        glClearColor(0.1, 0.2, 0.2, 1)
 
         self.snake = Snake()
         self.food = Food()
@@ -25,17 +30,17 @@ class Game:
     def draw_grid(self):
         glPushMatrix()
 
-        glScale(self.CELL_SIZE, self.CELL_SIZE, 0)
-
-        glColor(0, 0, 0, .2)
+        glScale(GRID['size'], GRID['size'], 0)
+        
+        glColor(0.2, 0.3, 0.3, 1)
         glBegin(GL_LINES)
 
-        for j in range(self.ROWS):
+        for j in range(GRID['rows']):
             glVertex(0, j)
-            glVertex(self.COLS, j)
-        for i in range(self.COLS):
+            glVertex(GRID['cols'], j)
+        for i in range(GRID['cols']):
             glVertex(i, 0)
-            glVertex(i, self.ROWS)
+            glVertex(i, GRID['rows'])
         glEnd()
         glPopMatrix()
 
@@ -72,7 +77,7 @@ class Game:
 
             glClear(GL_COLOR_BUFFER_BIT)
 
-            # self.draw_grid()
+            self.draw_grid()
             self.snake.draw()
             self.food.draw()
 
